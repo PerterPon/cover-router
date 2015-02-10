@@ -2,14 +2,13 @@
 # /*
 #   Index
 # */
-# Author: yuhan.wyh<yuhan.wyh@alibaba-inc.com>
+# Author: PerterPon<PerterPon@gmail.com>
 # Create: Sat Feb 07 2015 16:26:39 GMT+0800 (CST)
 #
 
 "use strict"
 
 methods      = require 'methods'
-debug        = require( 'debug' )( 'hc-cover-router' )
 pathToRegexp = require './path-to-regexp'
 
 matchMethod  = ( req, requiredMethod ) ->
@@ -23,12 +22,8 @@ matchPath = ( req, re, reqParams ) ->
 
   { url, method } = req
 
-  if m    = re.exec url
-    console.log re, url
-    args  = m.slice( 1 ).map ( val ) -> decodeURIComponent val if val?
-    debug '%s %s matches %j', method, url, args
-
-    console.log reqParams
+  if m   = re.exec url
+    args = m.slice( 1 ).map ( val ) -> decodeURIComponent val if val?
 
     req.originatorParam = args
     if null isnt reqParams
@@ -46,9 +41,9 @@ create    = ( method ) ->
   ( path, fn, opt ) ->
     re = pathToRegexp path, opt
 
-    console.log re
-
     reqParams = path.match /\:\w+\/?/g
+
+    # erase the '/:' or ':' prefix, and '/' sufix
     if null isnt reqParams
       reqParams = reqParams.map ( val ) ->
         ff    = 0
@@ -65,8 +60,8 @@ create    = ( method ) ->
       return ( req, res, next ) ->
         # match method
         yield next unless matchMethod req, method
-        # match path
 
+        # match path
         if true is matchPath req, re, reqParams
           yield fn req, res, next
           return

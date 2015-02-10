@@ -55,28 +55,6 @@ dev1:
 	@$(-BIN_COFFEE) -cb out/test
 	@find ./out/test -path ./out/test/node_modules -prune -o -name "*.coffee" -exec rm -rf {} \;
 
-test-cov: -pre-test-cov
-	@cd $(-COVERAGE_DIR) && \
-	  $(-BIN_ISTANBUL) cover ./node_modules/.bin/_mocha -- -u bdd -R tap $(patsubst $(-COVERAGE_DIR)%, %, $(-COVERAGE_TESTS)) && \
-	  $(-BIN_ISTANBUL) report html
-	
--release-pre : -common-pre
-	@echo 'copy files'
-	@mkdir -p $(-RELEASE_DIR)
-
-	@if [ `echo $$OSTYPE | grep -c 'darwin'` -eq 1 ]; then \
-		cp -r $(-RELEASE_COPY) $(-RELEASE_DIR); \
-	else \
-		cp -rL $(-RELEASE_COPY) $(-RELEASE_DIR); \
-	fi
-	@echo $(-GIT_REV)
-	@cd $(-RELEASE_DIR)
-
-	@cp package.json $(-RELEASE_DIR)
-
-	@cd $(-RELEASE_DIR) && PYTHON=`which python2.6` tnpm --color=false --registry=http://registry.npm.alibaba-inc.com install --production
-
-
 release: -release-pre
 	@rm -fr $(-RELEASE_DIR)/tests
 	@echo "all codes in \"$(-RELEASE_DIR)\""

@@ -1,23 +1,15 @@
 {
-  "name"          : "@ali/hc-cover-router",
+  "name"          : "cover-router",
   "main"          : "./index.js",
   "version"       : "1.0.0",
-  "publishConfig" : {
-    "registry"    : "http://registry.npm.alibaba-inc.com"
-  },
   "description": "Router for cover.",
   "author" : {
-    "name"   : "梁月",
-    "email"  : "yuhan.wyh@alibaba-inc.com"
+    "name"   : "PerterPon",
+    "email"  : "PerterPon@gmail.com"
   },
   "dependencies": {
     "coffee-script"  : "*",
-    "debug"          : "*",
-    "path-to-regexp" : "*",
-    "justlog"        : "*",
-    "methods"        : "*",
-    "koa-router"     : "*",
-    "koa-routes"     : "*"
+    "methods"        : "*"
   },
   "devDependencies": {
     "mocha"         : "*",
