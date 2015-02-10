@@ -46,3 +46,8 @@ describe 'path to regext', ->
     [ _ ] = re.exec '/test/test1'
     expect( _ ).to.be '/test/test1'
     done()
+
+  it 'pattern /test, request /test1', ( done ) ->
+    re    = PathToRegExp '/test'
+    expect( re.exec '/test1' ).to.be null
+    done()
