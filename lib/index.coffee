@@ -39,7 +39,8 @@ create    = ( method ) ->
   method  = method.toUpperCase() if method?
 
   ( path, fn, opt ) ->
-    re = pathToRegexp path, opt
+    # trans path to regexp.
+    re    = pathToRegexp path, opt
 
     reqParams = path.match /\:\w+\/?/g
 
