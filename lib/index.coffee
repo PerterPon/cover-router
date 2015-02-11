@@ -53,14 +53,14 @@ create    = ( method ) ->
           ff  = 2
         else if 0 is val.indexOf '\:'
           ff  = 1
-        if 0 is val.lastIndexOf '\\'
+        if val.length - 1 is val.lastIndexOf '\/'
           bb -= 1
         val.substring ff, bb
 
     if 'GeneratorFunction' is fn.constructor.name
       return ( req, res, next ) ->
         # match method
-        yield next unless matchMethod req, method
+        return yield next unless matchMethod req, method
 
         # match path
         if true is matchPath req, re, reqParams
@@ -73,7 +73,7 @@ create    = ( method ) ->
     else
       return ( req, res, next ) ->
         # match method
-        next() unless matchMethod req, method
+        return next() unless matchMethod req, method
 
         # match path
         if true is matchPath req, re, reqParams
