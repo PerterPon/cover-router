@@ -1,4 +1,4 @@
-NPM_INSTALL_TEST = PYTHON=`which python2.6` NODE_ENV=test tnpm install
+NPM_INSTALL_TEST = PYTHON=`which python2.6` NODE_ENV=test npm install
 TESTS             = $(shell find tests -type f -name test-*)
 
 -COVERAGE_DIR    := out/test/
