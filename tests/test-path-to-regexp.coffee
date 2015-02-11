@@ -14,6 +14,18 @@ PathToRegExp  = require '../lib/path-to-regexp'
 
 describe 'path to regext', ->
 
+  it 'pattern /, request /', ( done ) ->
+    re    = PathToRegExp '/'
+    [ _ ] = re.exec '/'
+    expect( _ ).to.be '/'
+    done()
+
+  it 'pattern /, request /test', ( done ) ->
+    re    = PathToRegExp '/'
+    [ _ ] = re.exec '/test'
+    expect( _ ).to.be '/test'
+    done()
+
   it 'pattern /test, request /test', ( done ) ->
     re    = PathToRegExp '/test'
     [ _ ] = re.exec '/test'

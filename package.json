@@ -1,8 +1,8 @@
 {
   "name"          : "cover-router",
   "main"          : "./index.js",
-  "version"       : "1.0.2",
-  "description": "Router for cover.",
+  "version"       : "1.0.3",
+  "description"   : "Router for cover.",
   "author" : {
     "name"   : "PerterPon",
     "email"  : "PerterPon@gmail.com"
