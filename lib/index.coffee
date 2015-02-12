@@ -24,7 +24,6 @@ matchPath = ( req, re, reqParams ) ->
 
   if m   = re.exec url
     args = m.slice( 1 ).map ( val ) -> decodeURIComponent val if val?
-
     req.originatorParam = args
     if null isnt reqParams
       params     = {}
