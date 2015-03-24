@@ -1,14 +1,13 @@
 {
   "name"          : "cover-router",
   "main"          : "./index.js",
-  "version"       : "1.0.5",
+  "version"       : "1.1.0",
   "description"   : "Router for cover.",
   "author" : {
     "name"   : "PerterPon",
     "email"  : "PerterPon@gmail.com"
   },
   "dependencies": {
-    "coffee-script"  : "*",
     "methods"        : "*"
   },
   "devDependencies": {
