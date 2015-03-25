@@ -71,3 +71,6 @@ clean:
 
 -logs:
 	@mkdir -p $(-LOGS_DIR)
+
+publish:
+	
