@@ -13,7 +13,7 @@ function getCoffeeScriptVersion(){
 
 if ( require.extensions['.coffee'] && getCoffeeScriptVersion() >= 190 ) {
   require( 'coffee-script' ).register();
-  module.exports = require( './lib/app.coffee' );
+  module.exports = require( './lib/index.coffee' );
 } else {
-  module.exports = require( './out/lib/app.js' );
+  module.exports = require( './out/lib/index.js' );
 }
