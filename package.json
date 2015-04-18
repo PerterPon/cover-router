@@ -1,7 +1,7 @@
 {
   "name"          : "cover-router",
   "main"          : "./index.js",
-  "version"       : "1.1.6",
+  "version"       : "1.1.7",
   "description"   : "Router for cover.",
   "author" : {
     "name"   : "PerterPon",

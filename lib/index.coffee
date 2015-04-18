@@ -41,6 +41,11 @@ create    = ( method ) ->
   method  = method.toUpperCase() if method?
 
   ( path, fn, opt ) ->
+
+    # if path like /test/, trans to /test
+    if '\/' is path[ path.length - 1 ]
+      path = path.substr 0, path.length - 1
+
     # trans path to regexp.
     re    = pathToRegexp path, opt
 

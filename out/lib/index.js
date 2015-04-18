@@ -55,6 +55,9 @@ create = function(method) {
   }
   return function(path, fn, opt) {
     var re, reqParams;
+    if ('\/' === path[path.length - 1]) {
+      path = path.substr(0, path.length - 1);
+    }
     re = pathToRegexp(path, opt);
     reqParams = path.match(/\:\w+\/?/g);
     if (null !== reqParams) {
