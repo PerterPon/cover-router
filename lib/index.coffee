@@ -19,11 +19,14 @@ matchMethod  = ( req, requiredMethod ) ->
   return true if 'HEAD' is requiredMethod and 'GET' is method
   return false
 
-matchPath = ( req, re, reqParams ) ->
+matchPath = ( req, re, reqParams, source ) ->
+  { url, originalUrl, method } = req
+  unless originalUrl?
+    req.originalUrl = url
 
-  { url, method } = req
-
-  { pathname } = urlLib.parse url
+  originalUrl    ?= url
+  urlInfo         = urlLib.parse originalUrl
+  { pathname }    = urlInfo
 
   if m   = re.exec pathname
     args = m.slice( 1 ).map ( val ) -> decodeURIComponent val if val?
@@ -33,6 +36,21 @@ matchPath = ( req, re, reqParams ) ->
       for name, idx in reqParams
         params[ name ] = args[ idx ]
       req.params = params
+    if 0 is pathname.indexOf source
+
+      # filter req.url to current pathname
+      pathItem   = pathname.split '/'
+      sourceItem = source.split '/'
+      for sourceUrlItem, idx in sourceItem
+        if sourceUrlItem is pathItem[ 0 ]
+          pathItem.shift()
+        else
+          break
+
+      pathItem.unshift ''
+      nPathname  = pathItem.join '/'
+      urlInfo.pathname = nPathname
+      req.url    = urlLib.format urlInfo
     true
   else
     false
@@ -41,13 +59,13 @@ create    = ( method ) ->
   method  = method.toUpperCase() if method?
 
   ( path, fn, opt ) ->
-
+    source = path
     # if path like /test/, trans to /test
     if '\/' is path[ path.length - 1 ]
       path = path.substr 0, path.length - 1
 
     # trans path to regexp.
-    re    = pathToRegexp path, opt
+    re     = pathToRegexp path, opt
 
     reqParams = path.match /\:\w+\/?/g
 
@@ -76,7 +94,7 @@ create    = ( method ) ->
         args.push next
 
         # match path
-        if true is matchPath req, re, reqParams
+        if true is matchPath req, re, reqParams, source
           yield fn.apply @, args
           return
 
@@ -89,7 +107,7 @@ create    = ( method ) ->
         return next() unless matchMethod req, method
 
         # match path
-        if true is matchPath req, re, reqParams
+        if true is matchPath req, re, reqParams, source
           fn req, res, next
           return
 

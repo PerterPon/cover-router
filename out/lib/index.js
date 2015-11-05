@@ -24,10 +24,17 @@ matchMethod = function(req, requiredMethod) {
   return false;
 };
 
-matchPath = function(req, re, reqParams) {
-  var args, idx, m, method, name, params, pathname, url, _i, _len;
-  url = req.url, method = req.method;
-  pathname = urlLib.parse(url).pathname;
+matchPath = function(req, re, reqParams, source) {
+  var args, idx, m, method, nPathname, name, originalUrl, params, pathItem, pathname, sourceItem, sourceUrlItem, url, urlInfo, _i, _j, _len, _len1;
+  url = req.url, originalUrl = req.originalUrl, method = req.method;
+  if (originalUrl == null) {
+    req.originalUrl = url;
+  }
+  if (originalUrl == null) {
+    originalUrl = url;
+  }
+  urlInfo = urlLib.parse(originalUrl);
+  pathname = urlInfo.pathname;
   if (m = re.exec(pathname)) {
     args = m.slice(1).map(function(val) {
       if (val != null) {
@@ -43,6 +50,22 @@ matchPath = function(req, re, reqParams) {
       }
       req.params = params;
     }
+    if (0 === pathname.indexOf(source)) {
+      pathItem = pathname.split('/');
+      sourceItem = source.split('/');
+      for (idx = _j = 0, _len1 = sourceItem.length; _j < _len1; idx = ++_j) {
+        sourceUrlItem = sourceItem[idx];
+        if (sourceUrlItem === pathItem[0]) {
+          pathItem.shift();
+        } else {
+          break;
+        }
+      }
+      pathItem.unshift('');
+      nPathname = pathItem.join('/');
+      urlInfo.pathname = nPathname;
+      req.url = urlLib.format(urlInfo);
+    }
     return true;
   } else {
     return false;
@@ -54,7 +77,8 @@ create = function(method) {
     method = method.toUpperCase();
   }
   return function(path, fn, opt) {
-    var re, reqParams;
+    var re, reqParams, source;
+    source = path;
     if ('\/' === path[path.length - 1]) {
       path = path.substr(0, path.length - 1);
     }
@@ -88,7 +112,7 @@ create = function(method) {
           return (yield next);
         }
         args.push(next);
-        if (true === matchPath(req, re, reqParams)) {
+        if (true === matchPath(req, re, reqParams, source)) {
           (yield fn.apply(this, args));
           return;
         }
@@ -99,7 +123,7 @@ create = function(method) {
         if (!matchMethod(req, method)) {
           return next();
         }
-        if (true === matchPath(req, re, reqParams)) {
+        if (true === matchPath(req, re, reqParams, source)) {
           fn(req, res, next);
           return;
         }
