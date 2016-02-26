@@ -65,6 +65,12 @@ matchPath = function(req, re, reqParams, source) {
       nPathname = pathItem.join('/');
       urlInfo.pathname = nPathname;
       req.url = urlLib.format(urlInfo);
+      if (req.url == null) {
+        req.url = '';
+      }
+      if ('' === req.url.trim()) {
+        req.url = '/';
+      }
     }
     return true;
   } else {

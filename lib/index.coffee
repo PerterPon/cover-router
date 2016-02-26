@@ -51,6 +51,9 @@ matchPath = ( req, re, reqParams, source ) ->
       nPathname  = pathItem.join '/'
       urlInfo.pathname = nPathname
       req.url    = urlLib.format urlInfo
+      req.url   ?= ''
+      if '' is req.url.trim()
+        req.url  = '/'
     true
   else
     false
