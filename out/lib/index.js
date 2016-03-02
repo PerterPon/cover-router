@@ -63,6 +63,9 @@ matchPath = function(req, re, reqParams, source) {
       }
       pathItem.unshift('');
       nPathname = pathItem.join('/');
+      if (!nPathname) {
+        nPathname = '/';
+      }
       urlInfo.pathname = nPathname;
       req.url = urlLib.format(urlInfo);
       if (req.url == null) {

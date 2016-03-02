@@ -49,6 +49,11 @@ matchPath = ( req, re, reqParams, source ) ->
 
       pathItem.unshift ''
       nPathname  = pathItem.join '/'
+
+      # e.g ?test=1&test2=2 to /?test=1&test2=2
+      unless nPathname
+        nPathname = '/'
+
       urlInfo.pathname = nPathname
       req.url    = urlLib.format urlInfo
       req.url   ?= ''
